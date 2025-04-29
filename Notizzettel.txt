@@ -1,0 +1,268 @@
+=====================================
+
+Clean Code C++
+
+Peter Loos
+
+30+ Jahre: Entwicklung (C/C++)
+
+Schulung: C/C++, C#, Java, JavaScript ( Python )
+
+Joel
+
+=====================================
+
+2 Tools:
+
+a) Visual Studio
+
+b) Github:  
+
+Themen:
+
+== Erwartungen
+
+== Lücken 
+
+== Was MUSS drin sein
+
+Überblick // Struktur  
+
+Gut strukturierter Code // Wartbar
+
+Modernes C++ mit Strukturierung
+
+Nebenziel: Legacy-Code einbinden.
+
+=======================================
+
+Todo-Liste:
+
+STL
+
+auto 
+
+RAII
+
+std::weak_ptr
+
+std::is_same, std::is_integral ... Datentypen ...
+
+std::variant, std::optional, std::tuple, std::pair
+
+Structured Binding
+
+Lambda !!!
+
+Range-based for–Loop
+
+STL Algorithmen: std::fill, std::find, ... std::copy, ... 
+
+STL Container: std::vector, std::array, std::span
+
+std::string, std::string_view
+
+constexpr
+
+Allgemein: Templates
+
+Unit-Test: Catch2
+
+Funktionale Programmierung: Wenn die Zeit reicht:  std::ranges
+
+C++ 20: Modul-Technik (Node.js // Python)
+
+SOLID: Guidelines
+
+Entwurfsmuster: Adapter // Observer // Visitor
+
+Multithreading
+
+
+=======================================
+
+Was ist ein Interface ???
+
+C#, Java:   interface
+
+C#:
+
+interface IEnumerator
+{
+    bool MoveNext();
+    void Reset();
+}
+
+Was tut ein Interface ???
+
+a) Es definiert Methoden.
+b) KEINE Implementierung.
+c) Ein Interface kann von einer oder mehreren Klassen
+   realisiert / implementiert werden.
+
+
+
+=======================================================
+
+Kopierkonstruktor:
+
+Nicht alles kann man kopieren "im echten Leben":   Socket, SqlConnection, 
+
+struct ICloneable   als Interface
+
+Wozu ???
+
+class A : public ICloneable        ===> Aha, A kann man kopieren 
+
+class B {}                         ===> Oh, B kann man NICHT kopieren.
+
+
+=======================================================
+
+Clean Code:
+
+Je mehr private, desto weniger Möglichkeiten, eine Variable zu verändern
+
+Go for private.
+
+=======================================================
+
+Verschieben ist das Gegenteil von Kopieren.
+
+Was ist schlecht am Kopieren von Objekten ????   Kosten ZEIT
+
+Wir wollen KOPIEN vermeiden 
+
+a) RValue
+
+b) Wie
+
+==============================================
+
+class A {};
+
+==:    A a;   a ist ein OBJEKT  // Original
+
+==:    A& ra = a;    ra ist eine Referenz (Adresse)  // LVALUE Referenz
+
+      Auch: Eine Referenz ist ein ALIAS
+            eines vorhandenen Objekts mit Namen
+
+Ab C++ 11:
+
+Es gibt eine zweite Art von Referenz: Eine für temporäre Objekte/Variablen,
+                                      für Objekte OHNE Namen
+
+
+A&& ra = a+b;
+
+Diese heißen RVAlUE Referenz.
+
+Zur Namensgebung:
+
+a = b;
+
+a ist links, ich brauche die ADRESSE: L Value
+
+b ist rechts, ich brauche den WERT (auch die Adresse), R VALUE
+
+=========================================
+
+Links:
+
+https://github.com/pelocpp/cpp_modern
+
+https://github.com/pelocpp/cpp_modern/blob/master/GeneralSnippets/MoveSemantics/MoveSemantics.md
+
+https://github.com/pelocpp/cpp_modern/blob/master/GeneralSnippets/RValueLValue/RValueLValue.md
+
+=========================================
+
+Move-Semantik: Why ??????????????
+
+std::vector: Ist wie ein Array, nur ohne FESTE Länge.
+
+(( Zur Laufzeit mir realloc oder ähnliches vergrößert ))
+
+In einem Vektor ist eine bestimmte Anzahl von PLätzen verfügbar:
+
+DICHT ANEIANDERLIEGEND.
+
+Wenn kein Platz mehr vorhanden ist:
+
+Es wird ein NEUER Platz gesucht - aus Optimierungsgründen:
+
+Neue Länge = Alte Länge * 1.5;
+
+std::vector:
+
+a) Dynamische Längenanpassung
+
+b) Mit RESERVE kann man eine erwartete Länge vorgeben
+
+   ==> Weniger UMKOPIEREN
+
+c) mit shrink_to_fit kann man den reservierten Speicher (Capacity)
+   an die tatsächliche Länge anpassen.
+
+========================================
+
+Verschiebe-Semantik:
+
+:--:  ...720     Tmp. Objekt am Stack  // Wird freigegeben
+:--:  ...1E0     Objekt im Vektor // via Kopier-Konstruktor
+
+Neu-Konzeption: Verbessert: Verschiebe-Semantik // Move-Semantik
+
+:--:  ...130     Tmp. Objekt am Stack 
+
+
+FAZIT:
+
+Mit der Move-Semantik (ab C++ 11)
+können überflüssige Kopien VERMIEDEN werden.
+
+Link:
+
+https://github.com/pelocpp/cpp_modern/blob/master/GeneralSnippets/MoveSemantics/MoveSemantics.md
+
+Rule-of-Five(Six)
+
+Rule-of-ZERO
+
+==============================================================
+
+Brace-Initialization     // Geschweifte Klammern
+
+Uniform-Initialization   // Einheitliche Initialisierung
+
+{}
+
+{} ===> Null-Wert
+
+
+Recap:
+
+Für Strukturen ist - Clean Code - eine sichere Vorgehensweise
+in der Initialisierung:
+
+A) Alle Member mit {}
+B) Standard-Konstruktor = default; schreiben,
+   so dass Felder und einzelne Objekte mit dem Standard-Konstruktor gehen.
+
+==============================================================
+
+auto
+
+Go for "auto"
+
+Vorsicht bei Referenz und vermeidbaren KOPIEN.
+
+Verlust von Referenz und const bei auto:
+
+=================================================
+
+Lambda
+
+Vorspann:  Aufrufbares Objekt  // Callable
+
