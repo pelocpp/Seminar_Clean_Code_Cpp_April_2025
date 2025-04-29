@@ -266,3 +266,27 @@ Lambda
 
 Vorspann:  Aufrufbares Objekt  // Callable
 
+Was bringen mir aufrufbare Objekte:
+
+Man braucht 'intern' immer wieder Hilfsmethoden:
+Welchen Namen haben diese ????????????
+Geht in C++ einfach: KEINEN, man nehme statt dessen den operator()
+
+Lambda
+
+Umgangssprachlich:  "Lambda-Funktion"
+
+Exakt: Lamda-Objekt
+
+Beschreibung:
+
+https://github.com/pelocpp/cpp_modern/blob/master/GeneralSnippets/Lambda/Lambda.md
+
+=====================================================================
+
+Cpp Insights:
+
+https://cppinsights.io/
+
+
+

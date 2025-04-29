@@ -12,6 +12,7 @@
 namespace Lambdas {
 
     static bool compare(int n1, int n2) {
+        std::println("vgl. {} mit {}", n1, n2);
         return n1 < n2;
     }
 
@@ -24,7 +25,10 @@ namespace Lambdas {
         Comparer() : m_flag{ true } {}
         Comparer(bool flag) : m_flag{ flag } {}
 
-        bool operator() (int n1, int n2) const {
+        // function call operator
+        // Sektion: Überladen // Overloading von Operatoren
+        bool operator()  (int n1, int n2) const {
+            std::println("operator() vgl. {} mit {}", n1, n2);
             return (m_flag) ? n1 < n2 : n1 > n2;
         }
     };
@@ -35,7 +39,7 @@ namespace Lambdas {
     {
         Comparer obj{ false };
 
-        bool result{ obj(1, 2) };
+        bool result = obj (1, 2);
 
         std::cout << std::boolalpha << result << std::endl;
     }
@@ -72,11 +76,13 @@ namespace Lambdas {
             std::cout << n << ' ';
         }
         std::cout << std::endl;
+          
+        Comparer cmp{ true };   // Comparer{ false }
 
         std::sort(
             vec.begin(),
             vec.end(),
-            Comparer{}  // Comparer{ false }
+            cmp 
         );
 
         for (int n : vec) {
@@ -99,6 +105,7 @@ namespace Lambdas {
             LocalComparer(bool flag) : m_flag{ flag } {}
 
             bool operator() (int n1, int n2) const {
+                std::println("local class: operator() vgl. {} mit {}", n1, n2);
                 return (m_flag) ? n1 < n2 : n1 > n2;
             }
         };
@@ -110,10 +117,21 @@ namespace Lambdas {
         }
         std::cout << std::endl;
 
+        // std::sort(
+        //     vec.begin(),
+        //     vec.end(),
+        //     LocalComparer{}  // LocalComparer{ false }
+        // );
+
+        bool m_direction = true;
+
         std::sort(
             vec.begin(),
             vec.end(),
-            LocalComparer{}  // LocalComparer{ false }
+            [=] (int n1, int n2) {
+                std::println("lambda: operator() vgl. {} mit {}", n1, n2);
+                return (m_direction) ? n1 < n2 : n1 > n2;
+            }
         );
 
         for (int n : vec) {
@@ -171,46 +189,41 @@ namespace Lambdas {
 
     static void test_07() {
 
-        // defining new variables in the lambda capture:
-        // we can declare a new variable that is only visible
-        // in the scope of the lambda: We do so by defining a variable
-        // in the lambda-capture without specifying its type:
 
         // lambda with variable definition
-        auto lambda = [variable = 10]() { return variable; };
+        auto lambda = [  variable = 123 ] () mutable -> int {
+
+          //  int variable = 123;
+
+            variable++;
+
+            return variable;    // Type Deduction
+        };
+
+
         std::cout << lambda() << std::endl;
-
-        // Captures default to 'const value':
-        // The mutable keyword removes the 'const' qualification from all captured variables
-        auto counter = [count = 50]() mutable {
-            ++count;
-            return count;
-            };
-
-        for (size_t i{}; i < 5; ++i) {
-            std::cout << counter() << " ";
-        }
-        std::cout << std::endl;
+        std::cout << lambda() << std::endl;
+        std::cout << lambda() << std::endl;
     }
 
     static void test_08() {
 
-        int n = 1;
+        int n = 1;  // lokale Variablen
         int m = 2;
 
-        auto l1 = [=] {
+        auto l1 = [=] () {   // []   Capture Clause
             std::cout << "Copy:      " << n << " " << m << std::endl;
             };
 
-        auto l2 = [&] {
+        auto l2 = [&]() {
             std::cout << "Reference: " << n << " " << m << std::endl;
             };
 
-        auto l3 = [&, m] {
+        auto l3 = [&, m]() {
             std::cout << "Both:      " << n << " " << m << std::endl;
             };
 
-        auto l4 = [=, &m] {
+        auto l4 = [=, &m]() {
             std::cout << "More both: " << n << " " << m << std::endl;
             };
 
@@ -326,22 +339,80 @@ namespace Lambdas {
     }
 }
 
+namespace Frage {
+
+    class Class {
+
+        friend std::ostream& operator << (std::ostream&, const Class&);
+
+    private:
+        int m_value;
+
+    public:
+        Class() : m_value{ 1 } {}
+
+        // just for demonstration purposes / observe, when copy c'tor is called !!!
+        Class(const Class& obj) {
+            std::cout << "copy c'tor called ..." << std::endl;
+            m_value = obj.m_value;
+        }
+
+        void incValue() {
+            ++m_value;
+        }
+
+        void doSomething() {
+
+          //   [this]() mutable {  // use [*this] to work on a copy
+          //       incValue();
+          //       return m_value;
+          //       };
+
+          auto lambda = [*this]() mutable {  // use [*this] to work on a copy
+              incValue();
+              return m_value;
+          };
+         
+          auto result = lambda();
+        }
+    };
+
+    std::ostream& operator << (std::ostream& os, const Class& obj) {
+        os << "m_value = " << obj.m_value;
+        return os;
+    }
+
+    static void test_01() {
+        Class object;
+        std::cout << object << std::endl;
+        object.doSomething();
+        std::cout << object << std::endl;
+    }
+
+}
+
+
 void main_lambdas()
 {
+
+    Frage::test_01();
+    return;
+
     using namespace Lambdas;
-    test_00();
-    test_01();
-    test_02();
-    test_03();
-    test_04();
-    test_05();
-    test_06();
-    test_07();
-    test_08();
-    test_09();
-    test_10();
-    test_11();
-    test_12();
+   //  using namespace Frage;
+   //test_00();
+   //test_01();
+   //test_02();
+   //test_03();
+   //test_04();
+   //test_05();
+   //test_06();
+   test_07();
+  // test_08();
+   //test_09();
+   //test_10();
+   //test_11();
+   //test_12();
 }
 
 // =====================================================================================

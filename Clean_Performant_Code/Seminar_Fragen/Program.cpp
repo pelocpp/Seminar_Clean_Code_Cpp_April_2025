@@ -12,7 +12,7 @@ void main_auto();
 
 int main()
 {
-    main_auto();
+    main_lambdas();
     return 0;
 }
 
