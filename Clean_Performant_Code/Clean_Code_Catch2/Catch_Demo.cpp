@@ -23,9 +23,9 @@ TEST_CASE ("Factorials are computed", "[factorial]") {
     REQUIRE(Factorial(5) == 120);
 
     CHECK(Factorial(1) == 1);
-    CHECK(Factorial(2) == 3);
-    CHECK(Factorial(3) == 6);
-    CHECK(Factorial(4) == 24);
+    CHECK(Factorial(2) == 2);              // should be 2
+    CHECK(Factorial(3) == 7);
+    CHECK(Factorial(4) == 25);
     CHECK(Factorial(5) == 120);
 }
 
@@ -49,7 +49,7 @@ TEST_CASE("vectors can be sized and resized", "[vector]") {
 
     std::cout << "Setting up Test Case: " << std::endl;
 
-    std::vector<int> v(5);
+    std::vector<int> v(5);  // reserve(5);
 
     REQUIRE(v.size() == 5);
     REQUIRE(v.capacity() >= 5);
@@ -72,6 +72,8 @@ TEST_CASE("vectors can be sized and resized", "[vector]") {
         // shrink_to_fit <=================
 
         REQUIRE(v.size() == 0);
+
+       // v.shrink_to_fit();
         
         REQUIRE(v.capacity() >= 5);
     }
@@ -106,7 +108,7 @@ TEST_CASE("vectors can be sized and resized", "[vector]") {
 }
 
 // ===============================================================
-// note: behaviour driven development stype testing
+// note: behaviour driven development style testing
 
 SCENARIO("bdd vectors can be sized and resized", "[bdd_vector]") {
 
@@ -125,14 +127,14 @@ SCENARIO("bdd vectors can be sized and resized", "[bdd_vector]") {
                 REQUIRE(v.capacity() >= 10);
             }
         }
-        WHEN("the size is reduced") {
-            v.resize(0);
-
-            THEN("the size changes but not capacity") {
-                REQUIRE(v.size() == 10);
-                REQUIRE(v.capacity() >= 5);
-            }
-        }
+ //       WHEN("the size is reduced") {
+ //           v.resize(0);
+ //
+ //           THEN("the size changes but not capacity") {
+ //               REQUIRE(v.size() == 10);
+ //               REQUIRE(v.capacity() >= 5);
+ //           }
+ //       }
         WHEN("more capacity is reserved") {
             v.reserve(10);
 

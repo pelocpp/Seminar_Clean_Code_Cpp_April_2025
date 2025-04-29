@@ -38,45 +38,43 @@ Nebenziel: Legacy-Code einbinden.
 
 Todo-Liste:
 
-STL
+auto : Check
 
-auto 
+Lambda !!!  : Check
 
-RAII
-
-std::weak_ptr
-
-std::is_same, std::is_integral ... Datentypen ...
-
-std::variant, std::optional, std::tuple, std::pair
-
-Structured Binding
-
-Lambda !!!
-
-Range-based for–Loop
-
-STL Algorithmen: std::fill, std::find, ... std::copy, ... 
-
-STL Container: std::vector, std::array, std::span
-
-std::string, std::string_view
-
-constexpr
-
-Allgemein: Templates
-
-Unit-Test: Catch2
+Unit-Test: Catch2 : Check
 
 Funktionale Programmierung: Wenn die Zeit reicht:  std::ranges
 
 C++ 20: Modul-Technik (Node.js // Python)
 
+Multithreading
+
+=======================================
+
+STL Container: std::vector, std::array, std::span
+
+STL Algorithmen: std::fill, std::find, ... std::copy, ... 
+
+std::weak_ptr
+
+RAII
+
+std::variant, std::optional, std::tuple, std::pair
+
+std::is_same, std::is_integral ... Datentypen ...
+
+Structured Binding
+
+Range-based for–Loop
+
+std::string, std::string_view
+
+constexpr
+
 SOLID: Guidelines
 
 Entwurfsmuster: Adapter // Observer // Visitor
-
-Multithreading
 
 
 =======================================
@@ -288,5 +286,10 @@ Cpp Insights:
 
 https://cppinsights.io/
 
+=====================================================================
 
+
+Unit Testing
+
+Catch 2
 
