@@ -4,6 +4,8 @@ Clean Code C++
 
 Peter Loos
 
+peter.loos@gmx.de
+
 30+ Jahre: Entwicklung (C/C++)
 
 Schulung: C/C++, C#, Java, JavaScript ( Python )
