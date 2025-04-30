@@ -12,6 +12,7 @@
 #include <print>
 #include <string>
 #include <vector>
+#include <deque>
 
 namespace STLAlgorithms {
 
@@ -19,9 +20,40 @@ namespace STLAlgorithms {
 
     static void test_initializing()
     {
-        std::vector<int> values(10);
+        //std::vector<int> values(10);
+        std::deque<int> values(10);
+
+        for (int i = 0; i < values.size(); ++i) {
+            values[i] = 123;
+        }
 
         std::fill(
+            values.begin(),
+            values.end(),
+            123
+        );
+    }
+
+    static void test_initializing_01()
+    {
+        ScopedTimer watch;  // RAII
+
+        //std::vector<int> values(10);
+        std::vector<int> values(100000'000);
+
+        for (int i = 0; i < values.size(); ++i) {
+            values[i] = 123;
+        }
+    }
+
+    static void test_initializing_02()
+    {
+        ScopedTimer watch;  // RAII
+     
+        //std::vector<int> values(10);
+        std::vector<int> values(100000'000);
+
+        std::fill(                    // memset
             values.begin(),
             values.end(),
             123
@@ -32,12 +64,26 @@ namespace STLAlgorithms {
 
     static void test_iterating()
     {
-        const auto values = std::vector{ 9, 7, 1, 2, 3, 8, 10, 4, 5, 6 };
+        auto values = std::vector<int>{ 9, 7, 1, 2, 3, 8, 10, 4, 5, 6 };
 
+        // Container durchlaufen -- classic for-loop
+        for (int i = 0; i < values.size(); ++i) {
+            std::print("{} ", values[i]);
+        }
+
+        // Container durchlaufen -- std::for_each
         std::for_each(
             values.begin(),
             values.end(), 
-            [](auto i) { std::print("{} ", i); }
+            [] (int i) {
+
+                // TEST
+                int m = i;
+
+                i = 2 * i;
+
+                std::print("{} ", i);
+            }
         );
         std::println();
     }
@@ -87,12 +133,22 @@ namespace STLAlgorithms {
     static void test_copying()
     {
         std::vector<int> source(10, 123);
-        std::vector<int> target(10);
+        std::vector<int> target(5);
+
+        std::vector<int> source1{ 10, 123 };
+        std::vector<int> target1{ 10 };
+
+        // std::copy: Schreibt in target mit dem Operator [] rein;
+        // target[index]
+
+        // ODER:
+        // target.push_back();
 
         std::copy(
             source.begin(),
             source.end(),
-            target.begin()
+            // target.begin()
+            std::back_inserter (target)  // für push_back
         );
 
         std::for_each(
@@ -105,21 +161,35 @@ namespace STLAlgorithms {
 
     // -----------------------------------------------------------------------
 
+    // free function
+    // std::string  ===> ich würde per Referenz machen:  std::string&, um Kopien von std::string ZU VERMEIDEN !!!
+    double wandle_um(const std::string& entry) {
+        return std::stod(entry);
+    }
+
     static void test_transforming()
     {
+        size_t s = sizeof(std::string);
+
+        // SSO:
+        size_t sso_buffer = std::string{}.capacity();
+
+        std::cout << alignof(std::max_align_t) << '\n';
+
         const std::list<std::string> source {
             "1.5", "2.5", "3.5", "4.5", "5.5", "6.5", "7.5", "8.5", "9.5", "10.5"
         };
         
-        std::vector<double> target;
+        std::vector<double> target;   // empty
 
         std::transform(
             source.begin(),
             source.end(),
-            std::back_inserter(target),
-            [](const auto& entry) {
-                return std::stod(entry);
-            }
+            std::back_inserter(target),   // push_back
+            //[](const auto& entry) {       // Lambda: Umwandlung // Transformation
+            //    return std::stod(entry);
+            //}
+            wandle_um
         );
 
         std::for_each(
@@ -659,21 +729,26 @@ namespace STLAlgorithms_BestPractices {
 static void test_algorithms_introduction()
 {
     using namespace STLAlgorithms;
-    test_initializing();
-    test_iterating();
-    test_generating();
-    test_generating_indices();
-    test_copying();
+
+    //test_initializing_01();
+    //test_initializing_02();
+    //return;
+
+    //test_initializing();
+    //test_iterating();
+    //test_generating();
+    //test_generating_indices();
+    //test_copying();
     test_transforming();
-    test_accumulate();
-    test_sorting();
-    test_finding();
-    test_finding_binary();
-    test_some_condition();
-    test_counting();
-    test_counting_binary();
-    test_min_max_clamp();
-    test_min_max();
+    //test_accumulate();
+    //test_sorting();
+    //test_finding();
+    //test_finding_binary();
+    //test_some_condition();
+    //test_counting();
+    //test_counting_binary();
+    //test_min_max_clamp();
+    //test_min_max();
 }
 
 static void test_algorithms_best_practices()
@@ -689,7 +764,7 @@ static void test_algorithms_best_practices()
 void test_algorithms()
 {
     test_algorithms_introduction();
-    test_algorithms_best_practices();
+   // test_algorithms_best_practices();
 }
 
 // ===========================================================================

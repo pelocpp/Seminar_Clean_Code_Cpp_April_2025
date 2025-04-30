@@ -11,6 +11,11 @@
 #include <string>
 #include <vector>
 
+#include <unordered_map>
+
+
+
+
 namespace STLContainer {
 
     namespace Vectors {
@@ -153,6 +158,8 @@ namespace STLContainer {
     namespace FlatMap {
 
         static void test_flat_map() {
+
+            std::unordered_map<std::string, int> people2;
 
             std::map<std::string, int> people;   // replace 'std::map' with 'flat_map', add "#include <flat_map>"
 

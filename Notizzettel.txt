@@ -56,7 +56,13 @@ STL Container: std::vector, std::array, std::span
 
 STL Algorithmen: std::fill, std::find, ... std::copy, ... 
 
-std::weak_ptr
+std::weak_ptr  // std::shared_ptr // std::unique_ptr
+
+
+ std::unique_ptr  // get()  raw Pointer
+
+
+ explicit
 
 RAII
 
@@ -288,8 +294,215 @@ https://cppinsights.io/
 
 =====================================================================
 
-
 Unit Testing
 
 Catch 2
 
+=====================================================================
+
+std::shared_ptr
+
+Problem: Er funktioniert nicht immer !!!!!!!!!!!!!!!!!!
+
+Link:
+
+https://github.com/pelocpp/cpp_modern/blob/master/GeneralSnippets/WeakPtr/WeakPtr.md
+
+a) Wie funktioniert der std::weak_ptr
+
+b) WARUM ???? Clean Code
+
+Observer - Pattern:  // Beobachter
+
+A) Es gibt ein Objekt mit ZUSTAND, der sich ändert.
+   Wenn der Zustand sich ändert, müssen die Client-Objekte benachrichtigt werden.
+
+B) Es gibt Client-Objekte, die das ZUSTANDS-Objekt beobachten wollen.
+
+===================================================================
+
+Fazit:
+
+std::shared_ptr
+
+std::weak_ptr
+
+Visualisierung:
+
+Bauteile: std::shared_ptr
+
+Visualisierung: Will Bauteile zeichnen // darstellen // UI
+
+    std::shared_ptr oder std::weak_ptr
+
+a) std::shared_ptr
+
+b) std::weak_ptr:   lock geht oder geht NICHT (empty // nullptr)
+
+
+Fazit: Je mehr std::weak_ptr, desto besser:  Temporärer Besitzer
+
+                                             KEin ECHTER Besitzer.
+
+
+============================================================
+
+Container:
+
+Dictionary:
+
+Menge von Key / Value Paaren  // Schlüssel / Wert Paaren:
+
+A) Telefonbuch:
+
+   Key:     std::string // "Hans"
+   Value:   int         // 123345
+
+A) Wörterbuch:
+
+   Key:     std::string    // "Haus"
+   Value:   std::string    // "house"
+
+
+Zugriff:  Mit Key: Über den Key bekommen wir den Wert zurück.
+
+C++:  std::unordered_map !!! NICHT: std::map
+
+
+=====================================================================
+
+STL:  Algorithmen
+
+Einfachere Dinge:  Vorbelegen, Container durchlaufen (traversieren), Suchen,
+                   Kopieren ...
+
+Clean Code:  ===>  Go - for - STL Algorithmen
+
+=====================================================================
+
+
+Call-by-Value versus Call-by-Reference:
+
+Macht das einen Unterschied ???????????????????
+
+
+                // TEST: Call-by-Value                    [] (int i) {  
+                int m = i;
+00007FF60BB33A75  mov         eax,dword ptr [i]  
+00007FF60BB33A7B  mov         dword ptr [m],eax  
+
+
+                // TEST: Call-by-Reference                [] (int& i) {
+                int m = i;
+00007FF71D8C3A76  mov         rax,qword ptr [i]  
+00007FF71D8C3A7D  mov         eax,dword ptr [rax]  
+00007FF71D8C3A7F  mov         dword ptr [m],eax  
+
+Fazit: 
+
+a) ELEMENTARE Variablen:  Call- by-Value // Kopie
+
+b) Objekte/Strukturen:    Call- by-Referenz // Adresse
+
+==================================================
+
+Clean Code:
+
+Container und Algorithmen:
+
+Sind getestet.
+Sind performant.
+
+DRY:Don'T repeat yourself
+
+
+====================================================
+
+STL:
+
+        std::transform(
+            source.begin(),
+            source.end(),
+            std::back_inserter(target),   // push_back
+            [](const auto& entry) {       // Lambda: Umwandlung // Transformation
+                return std::stod(entry);
+            }
+        );
+
+        std::for_each(
+            target.begin(),
+            target.end(),
+            [](auto n) { std::print("{} ", n); }
+        );
+
+Die STL hat eine gewisse Stilistik:
+
+Programmieren in "Buiding Blocks"  // Bausteinen.
+
+Reduktion der Funktionalität auf das Ausfüllen // Erstellen von Lambdas.
+
+Frage zu std::String und Alignment:
+
+std::max_alignof
+
+std::String  "da sind ein paar Sachen mit abgespeichert" :)   SSO
+
+Small-String Optimization
+
+=========================================================
+
+Zum schnellen TEsten:
+
+Online-Compiler:
+
+Wandbox.org
+
+==========================================================
+
+Clean Code:   std::string
+
+Allgemein:
+
+Wo legt std::string seine Zeichenkette ab ???
+
+Am HEAP    ==> new ==> Performanz
+
+(( Ausnahme: kurze Zeichenketten ))
+
+Frage: 
+
+
+std::string s { "Dies ist eine lange Zeichenkette" };
+
+"Lokaler Windows Debugger"   == Heap.
+
+Soll // muss diese Zeichenkette am Heap liegen ???????
+
+Frage: 
+
+const char* s = "Lokaler Windows Debugger";
+
+Wo liegt diese Zeichenkette ???
+
+NICHT AM HEAP.
+
+Möglicherweise:
+
+https://en.wikipedia.org/wiki/File:Program_memory_layout.pdf
+
+bss, data oder text.
+
+Geht das auch in / mit C++:   std::string_view
+
+Was ist ein std::string_view:
+
+A) Anfangsadresse: const char* s
+B) Die Länge (kein strlen ..)
+
+==============================================
+
+Clean Code:
+
+Go for explicit
+
+==============================================

@@ -9,10 +9,13 @@ void main_move_semantics();
 void test_vector();
 void main_lambdas();
 void main_auto();
+void main_weak_pointer();
+void main_string_view();
+void main_explicit_keyword();
 
 int main()
 {
-    main_lambdas();
+    main_explicit_keyword();
     return 0;
 }
 
