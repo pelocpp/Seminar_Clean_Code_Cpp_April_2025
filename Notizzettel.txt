@@ -52,35 +52,35 @@ Multithreading
 
 =======================================
 
-STL Container: std::vector, std::array, std::span
+STL Container: std::vector, std::array, std::span    : halber Check
 
-STL Algorithmen: std::fill, std::find, ... std::copy, ... 
+STL Algorithmen: std::fill, std::find, ... std::copy, ...     : Check
 
-std::weak_ptr  // std::shared_ptr // std::unique_ptr
+std::weak_ptr  // std::shared_ptr // std::unique_ptr  : Check
 
+std::unique_ptr  // get()  raw Pointer  : Check
 
- std::unique_ptr  // get()  raw Pointer
+explicit  : Check
 
-
- explicit
-
-RAII
+RAII  <======
 
 std::variant, std::optional, std::tuple, std::pair
 
 std::is_same, std::is_integral ... Datentypen ...
 
-Structured Binding
+Structured Binding  : Check
 
-Range-based for–Loop
+Range-based for–Loop  : Check
 
-std::string, std::string_view
+std::string, std::string_view  : Check
 
-constexpr
+constexpr <======
 
-SOLID: Guidelines
+SOLID: Guidelines  : Check
 
-Entwurfsmuster: Adapter // Observer // Visitor
+Entwurfsmuster: Adapter // Observer // Visitor    : Check
+
+Strong Typing  <======
 
 
 =======================================
@@ -506,3 +506,143 @@ Clean Code:
 Go for explicit
 
 ==============================================
+
+Entwurfsmuster:
+===============
+
+Clean Code
+
+Gebrauchsanweisungen // Erfahrung
+
+Anwenden.
+
+== Observer
+== Adapter
+
+Link:
+
+https://github.com/pelocpp/cpp_design_patterns/blob/master/Patterns/Observer/Resources/Readme.md
+
+Pattern:
+
+So genanntes "Conceptual Example".
+
+Dieses wird häufig durch eine Testfunktion "clientCode" getriggered.
+
+==============================================
+
+Nachricht:  
+
+XML
+
+JSON
+
+==============================================
+
+Entwurfsmuster // Entwurfsprinzip
+
+SOLID
+
+"Inversion of Dependency"
+
+Das ist simpel, wenn wir darüber reden.
+
+Rad ist da auch nicht neu erfunden:
+
+Lose Kopplung // Enge Kopplung: SCHLECHT.
+
+
+Konflikt: Zeit versus besseres Design / besseres Konzept
+
+===========================================================
+
+RAII
+
+https://github.com/pelocpp/cpp_design_patterns/blob/master/Patterns/RAII_Idiom/Resources/Readme.md
+
+
+
+Idee:
+
+((  Smart Pointer ))   new // delete
+
+Resources:
+
+Socket
+SqlConnection
+Mutex
+FILE
+
+Werden versteckt in einer Hüllen-Klasse:
+Objekt  ==> Konstruktor  :  Open // Attach
+        ==> Destruktor: Close // detach // Release   // DETERMINISTISCH
+
+==> Open // Attach
+==> Close // detach // Release
+
+Noch ein Beispiel:
+
+std::mutex mtx;
+
+Beispiel:
+
+mtx.lock();
+// kritische Anweisungen  // nur von einem Thread aus aufgerufen werden können
+// break;  // throw 
+mtx.unlock();
+
+C++ Clean Code: std::mutex NICHT verwenden.
+
+Besser:
+
+{
+    std::lock_guard<std::mutex> raii (mtx);  // Konstruktor: mtx.lock();
+
+    // kritische Anweisungen  // nur von einem Thread aus aufgerufen werden können
+    // break;  // throw 
+
+}   <== Destruktor // mtx.unlock();
+
+{
+     ScopedTimer watch{};  // Logger::startWatch();
+
+
+}
+   // ~ScopedTimer() {
+   //     Logger::stopWatchMilli(std::cout);
+   // }
+
+// ==============================================
+
+Strong Types:
+
+Hmmm, häufig verwenden wir den Typ 'int' für Sachen wie:
+
+Alter einer Person:  m_age  18 ... 70   <== realen Werte
+
+Viele Optionen, dies sicher zustellen:
+
+int m_age;   // private
+
+getter / setter:
+
+Idee:  Nope, kein int verwenden:  "Strong Type": Klasse 
+
+============================================================
+
+constexpr:
+
+Gerade für Embedded interessant :)
+
+https://github.com/pelocpp/cpp_modern/blob/master/GeneralSnippets/ConstExpr/Constexpr.md
+
+
+
+
+
+
+
+
+
+
+

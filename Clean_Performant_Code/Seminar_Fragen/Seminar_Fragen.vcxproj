@@ -128,12 +128,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Fragen_Adapter.cpp" />
     <ClCompile Include="Fragen_auto.cpp" />
     <ClCompile Include="Fragen_constexpr.cpp" />
+    <ClCompile Include="Fragen_constexpr_CRC.cpp" />
     <ClCompile Include="Fragen_explicit.cpp" />
     <ClCompile Include="Fragen_Interface.cpp" />
+    <ClCompile Include="Fragen_Inversion_of_Dependency.cpp" />
     <ClCompile Include="Fragen_Lambda.cpp" />
+    <ClCompile Include="Fragen_ObserverPattern.cpp" />
     <ClCompile Include="Fragen_string_view.cpp" />
+    <ClCompile Include="Fragen_Template_Method_Pattern.cpp" />
     <ClCompile Include="Fragen_Vector.cpp" />
     <ClCompile Include="Fragen_Verschieben_01.cpp" />
     <ClCompile Include="Fragen_Verschieben_02.cpp" />

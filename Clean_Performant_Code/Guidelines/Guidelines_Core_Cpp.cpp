@@ -1245,7 +1245,7 @@ namespace GuidelinesCoreCpp {
 
             struct Card
             {
-                int value{};
+                int value{};   // 7, 8, 9, 10
                 Suit suit{};
             };
 
@@ -1287,7 +1287,7 @@ namespace GuidelinesCoreCpp {
             class Card
             {
             private:
-                FaceValue m_value{ 7 };
+                FaceValue m_value{ 7 };  // an Stelle von int
                 Suit m_suit{};
 
             public:
